@@ -20,45 +20,152 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: const Color.fromRGBO(20, 31, 106, 1),
       ),
       body: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        height: 900,
-        width: 900,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        height: double.infinity,
+        width: double.infinity,
         decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
         ),
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children:[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(500),
-                child: Image.network(
-                  'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
-                  width: 200,
-                  alignment: Alignment.center,
-                ),
+        child: ListView(
+          children: [
+            Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: Stack(
+                fit: StackFit.loose,
+                clipBehavior: Clip.none,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(500),
+                    child: Image.network(
+                      'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
+                      width: 150,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                  Positioned(
+                    top: -10,
+                    left: 160,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.mode_edit_outline_outlined,
+                        size: 40,
+                      ),
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
-              const Expanded(
-                  child: Text('Username',
-                      maxLines: 2,
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 14, 42, 65))),
-              )
-        ],
+            ),
+            const SizedBox(height: 25),
+            _dataContainer(data: 'Nombre', value: 'Juan Perez'),
+            const SizedBox(height: 25),
+            _dataContainer(data: 'Apellidos', value: 'Sanchez Maita'),
+            const SizedBox(height: 25),
+            _dataContainer(data: 'Dirección', value: 'Las golondrinas R11'),
+            const SizedBox(height: 25),
+            _dataContainer(data: 'Nacimiento', value: '10/12/2000'),
+            const SizedBox(height: 25),
+            _dataContainer(data: 'Teléfono', value: '+34 654 567 890'),
+            const SizedBox(height: 25),
+            _dataContainer(data: 'Discord', value: 'AgustinMaita#1774'),
+            const SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _inGameData(
+                    game: 'Counter Strike Global Ofencive',
+                    nickname: 'MaiyiProGamer',
+                    range: 'Global Elite'),
+                _inGameData(
+                    game: 'Dota 2',
+                    nickname: 'MaiyiProGamer',
+                    range: 'Inmortal Top 1')
+              ],
+            ),
+            const SizedBox(height: 25),
+          ],
+        ),
       ),
-        /*const Text('Profile',
-          maxLines: 3,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 25,
-            color: Colors.black)),*/
-      )
     );
   }
 
-
+  Container _dataContainer({required String data, required String value}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.26,
+            child: AutoSizeText(
+              data,
+              maxLines: 1,
+              style: const TextStyle(
+                  fontSize: 20, color: Color.fromRGBO(121, 128, 148, 1)),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Material(
+              borderRadius: BorderRadius.circular(10),
+              elevation: 3,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: AutoSizeText(
+                  value,
+                  maxLines: 1,
+                  style: const TextStyle(
+                      fontSize: 20, color: Color.fromRGBO(170, 178, 203, 1)),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+  Widget _inGameData(
+      {required String game, required String nickname, required String range}) {
+    final String _nickname = 'Nick:' + nickname;
+    final String _range = 'Rango:' + range;
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.4,
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.network(
+              'https://i.pinimg.com/originals/c1/ec/da/c1ecda477bc92b6ecfc533b64d4a0337.png',
+              width: 100,
+              alignment: Alignment.center,
+            ),
+          ),
+          const SizedBox(height: 15),
+          AutoSizeText(
+            _nickname,
+            maxLines: 1,
+            style: const TextStyle(
+                fontSize: 18, color: Color.fromRGBO(121, 128, 148, 1)),
+          ),
+          const SizedBox(height: 15),
+          AutoSizeText(
+            _range,
+            maxLines: 1,
+            style: const TextStyle(
+                fontSize: 18, color: Color.fromRGBO(121, 128, 148, 1)),
+          ),
+        ],
+      ),
+    );
+  }
+}
