@@ -37,24 +37,30 @@ class _ProfilePageState extends State<ProfilePage> {
                 fit: StackFit.loose,
                 clipBehavior: Clip.none,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(500),
-                    child: Image.network(
-                      'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
-                      width: 150,
-                      alignment: Alignment.center,
+                  SizedBox(
+                    width: double.infinity,
+                    height: 150,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(500),
+                      child: Image.network(
+                        'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
+                        width: 150,
+                        alignment: Alignment.center,
+                      ),
                     ),
                   ),
                   Positioned(
-                    top: -10,
-                    left: 160,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
+                    top: 10,
+                    left: 260,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, 'profileEditPage');
+                      },
+                      child: const Icon(
                         Icons.mode_edit_outline_outlined,
                         size: 40,
+                        color: Colors.black,
                       ),
-                      color: Colors.black,
                     ),
                   ),
                 ],

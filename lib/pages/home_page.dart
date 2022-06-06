@@ -47,33 +47,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _itemGame() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      height: 150,
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(
-              'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, 'materialesPage'),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        height: 150,
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
+              ),
             ),
-          ),
-          const SizedBox(width: 55),
-          const Expanded(
-            child: AutoSizeText('League Of Legends',
-                maxLines: 2,
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 14, 42, 65))),
-          )
-        ],
+            const SizedBox(width: 55),
+            const Expanded(
+              child: AutoSizeText('League Of Legends',
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 14, 42, 65))),
+            )
+          ],
+        ),
       ),
     );
   }

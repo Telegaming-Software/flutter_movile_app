@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tg_softwareapp/pages/edit_profile_page.dart';
 import 'package:tg_softwareapp/pages/login.dart';
+import 'package:tg_softwareapp/pages/material_info_page.dart';
+import 'package:tg_softwareapp/pages/materiales_page.dart';
 import 'package:tg_softwareapp/pages/restaurar_password_page.dart';
 
 import '../pages/home_page.dart';
@@ -16,6 +19,9 @@ class AppRoutes {
     'registerPage': (BuildContext context) => const RegisterPage(),
     'homePage': (BuildContext context) => const HomePage(),
     'profilePage': (BuildContext context) => const ProfilePage(),
+    'profileEditPage': (BuildContext context) => const EditProfilePage(),
+    'materialesPage': (BuildContext context) => const MaterialesPage(),
+    'materialInfoPage': (BuildContext context) => const MaterialInfoPage(),
   };
   static onGeneratedRoute(RouteSettings settings) {
     return MaterialPageRoute(builder: (context) => const Login());
