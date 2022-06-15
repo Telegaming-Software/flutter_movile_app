@@ -20,7 +20,6 @@ class AppRoutes {
     'homePage': (BuildContext context) => const HomePage(),
     'profilePage': (BuildContext context) => const ProfilePage(),
     'profileEditPage': (BuildContext context) => const EditProfilePage(),
-    'materialesPage': (BuildContext context) => const MaterialesPage(),
     'materialInfoPage': (BuildContext context) => const MaterialInfoPage(),
   };
   static onGeneratedRoute(RouteSettings settings) {

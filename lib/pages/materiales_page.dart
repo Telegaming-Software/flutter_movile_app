@@ -1,15 +1,34 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tg_softwareapp/models/material_training_model.dart';
+import 'package:tg_softwareapp/services/material_training_service.dart';
 import 'package:tg_softwareapp/widgets/drawer_user.dart';
 
 class MaterialesPage extends StatefulWidget {
-  const MaterialesPage({Key? key}) : super(key: key);
+  final int gameId;
+  const MaterialesPage({Key? key, required this.gameId}) : super(key: key);
 
   @override
   State<MaterialesPage> createState() => _MaterialesPageState();
 }
 
 class _MaterialesPageState extends State<MaterialesPage> {
+  final _materialTrainingService = MaterialTrainingService();
+  List<TrainingMaterial> trainingMaterials = [];
+  void _getTrainingMaterials() async {
+    final trainingMaterials =
+        await _materialTrainingService.getById(gameId: widget.gameId);
+    setState(() {
+      this.trainingMaterials = trainingMaterials;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getTrainingMaterials();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +52,13 @@ class _MaterialesPageState extends State<MaterialesPage> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return _material(
-                    image:
-                        'https://letraslibres.com/wp-content/uploads/2016/05/random_access_memories.jpg',
-                    coach: 'Pluton',
-                    material: 'Guia de farmeo y control de masas 5vs5',
+                    image: trainingMaterials[index].trainingCoverUri!,
+                    coach: 'NoneInformation',
+                    material: trainingMaterials[index].title!,
                     fecha: '12/12/2020',
                   );
                 },
-                itemCount: 2),
+                itemCount: trainingMaterials.length),
           ],
         ),
       ),
