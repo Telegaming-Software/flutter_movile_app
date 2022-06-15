@@ -40,6 +40,17 @@ class _DrawerUserState extends State<DrawerUser> {
                 icon: Icons.social_distance_rounded,
                 text: 'Coaching',
                 onpressed: () {}),
+
+
+            _drawerItem(
+                icon: Icons.book,
+                text: 'Añade tu material',
+                onpressed: () {
+                  Navigator.pushNamed(context, 'addMaterialPage');
+                }),
+
+
+
             _drawerItem(
                 icon: Icons.money_sharp,
                 text: 'Añadir balance',
