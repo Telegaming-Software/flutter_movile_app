@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tg_softwareapp/models/game_model.dart';
+import 'package:tg_softwareapp/pages/materiales_page.dart';
+import 'package:tg_softwareapp/services/game_service.dart';
 import 'package:tg_softwareapp/widgets/drawer_user.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +13,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _gameService = GameService();
+  List<Game> games = [];
+  void _getGames() async {
+    final games = await _gameService.getAllGames();
+    setState(() {
+      this.games = games;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getGames();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,18 +55,23 @@ class _HomePageState extends State<HomePage> {
                 physics: const ScrollPhysics(parent: null),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return _itemGame();
+                  return _itemGame(game: games[index]);
                 },
-                itemCount: 20,
+                itemCount: games.length,
               )
             ],
           ),
         ));
   }
 
-  Widget _itemGame() {
+  Widget _itemGame({required Game game}) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, 'materialesPage'),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (ctx) => MaterialesPage(
+                  gameId: game.id!.toInt(),
+                )));
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         height: 150,
@@ -63,14 +86,14 @@ class _HomePageState extends State<HomePage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
-                'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
+                game.coverUri!,
               ),
             ),
             const SizedBox(width: 55),
-            const Expanded(
-              child: AutoSizeText('League Of Legends',
+            Expanded(
+              child: AutoSizeText(game.name!,
                   maxLines: 2,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 14, 42, 65))),
