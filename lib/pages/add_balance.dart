@@ -82,6 +82,7 @@ class _AddBalancePageState extends State<AddBalancePage> {
               const SizedBox(height: 15),
               _cardHolder(),
 
+              const SizedBox(height: 40),
             ],
           ),
           ]

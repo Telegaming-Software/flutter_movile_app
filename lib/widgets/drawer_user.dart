@@ -44,7 +44,6 @@ class _DrawerUserState extends State<DrawerUser> {
                 icon: Icons.money_sharp,
                 text: 'Añadir balance',
                 onpressed: () {
-
                   Navigator.pushNamed(context, 'addBalancePage');
                 }),
 
