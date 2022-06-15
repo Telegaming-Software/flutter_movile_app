@@ -32,12 +32,22 @@ class _DrawerUserState extends State<DrawerUser> {
                   Navigator.pushNamed(context, 'profilePage');
                 }),
             const SizedBox(height: 10),
-            _drawerItem(icon: Icons.book, text: 'Materiales', onpressed: () {}),
+            _drawerItem(icon: Icons.book, text: 'Materiales', onpressed: () {
+              Navigator.pushNamed(context, 'materialesPage');
+            }),
             const SizedBox(height: 10),
             _drawerItem(
                 icon: Icons.social_distance_rounded,
                 text: 'Coaching',
                 onpressed: () {}),
+            _drawerItem(
+                icon: Icons.money_sharp,
+                text: 'Añadir balance',
+                onpressed: () {
+
+                  Navigator.pushNamed(context, 'addBalancePage');
+                }),
+
             _drawerItem(
                 icon: Icons.exit_to_app_outlined,
                 text: 'Cerrar Sesión',
