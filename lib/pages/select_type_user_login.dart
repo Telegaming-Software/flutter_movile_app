@@ -155,7 +155,9 @@ class _SelectTypeScreenState extends State<SelectTypeScreen> {
   Widget _loginButton() {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, 'login');
+        typeUser == 'Gamer'
+            ? Navigator.pushNamed(context, 'loginGamer')
+            : Navigator.pushNamed(context, 'loginCoach');
       },
       child: const Text(
         'Iniciar Sesión',
@@ -174,7 +176,9 @@ class _SelectTypeScreenState extends State<SelectTypeScreen> {
   Widget _registerButton() {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, 'registerPage');
+        typeUser == 'Gamer'
+            ? Navigator.pushNamed(context, 'registerGamer')
+            : Navigator.pushNamed(context, 'registerCoach');
       },
       child: const Text(
         'Registrarse',

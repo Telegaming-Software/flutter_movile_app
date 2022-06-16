@@ -17,6 +17,7 @@ class _LoginState extends State<Login> {
         backgroundColor: const Color.fromRGBO(20, 31, 106, 1),
       ),
       body: ListView(
+        controller: ScrollController(),
         children: [
           Column(
             children: [
