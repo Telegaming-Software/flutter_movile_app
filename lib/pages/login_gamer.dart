@@ -12,8 +12,9 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
@@ -21,6 +22,9 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.09,
+            ),
             SizedBox(
               child: Image.asset(
                 'assets/brand4.jpg',
@@ -181,7 +185,9 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
 
   Widget _loginButton() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushReplacementNamed(context, 'homePage');
+      },
       child: Text(
         'Login',
         style: GoogleFonts.nunito(
