@@ -18,7 +18,6 @@ class MaterialTrainingService extends GeneralService {
       final List<TrainingMaterial> materials = jsonResponse['content']
           .map<TrainingMaterial>((json) => TrainingMaterial.fromJson(json))
           .toList();
-      print(materials);
       return materials;
     } else {
       throw Exception('Failed to load games');

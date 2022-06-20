@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tg_softwareapp/models/material_training_model.dart';
 import 'package:tg_softwareapp/services/material_training_service.dart';
 import 'package:tg_softwareapp/widgets/drawer_user.dart';
+import 'package:tg_softwareapp/widgets/material_item.dart';
 
 class MaterialesPage extends StatefulWidget {
   final int gameId;
@@ -51,111 +52,13 @@ class _MaterialesPageState extends State<MaterialesPage> {
                 physics: const ScrollPhysics(parent: null),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return _material(
-                    image: trainingMaterials[index].trainingCoverUri!,
-                    coach: 'NoneInformation',
-                    material: trainingMaterials[index].title!,
-                    fecha: '12/12/2020',
-                  );
+                  return MaterialItem(
+                      coach: trainingMaterials[index].nameCoach!,
+                      coverUri: trainingMaterials[index].trainingCoverUri!,
+                      title: trainingMaterials[index].title!,
+                      id: trainingMaterials[index].trainingMaterialId!);
                 },
                 itemCount: trainingMaterials.length),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _material(
-      {required String image,
-      required String coach,
-      required String material,
-      required String fecha}) {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, 'materialInfoPage'),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        margin: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-        height: 150,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 130,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(image),
-                ),
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Coach:',
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: AutoSizeText(
-                            coach,
-                            maxLines: 2,
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Material:',
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: AutoSizeText(
-                            material,
-                            maxLines: 3,
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Fecha:',
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        const SizedBox(width: 10),
-                        AutoSizeText(
-                          fecha,
-                          maxLines: 2,
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

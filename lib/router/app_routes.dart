@@ -35,9 +35,9 @@ class AppRoutes {
     'splashscreen': (BuildContext context) => const SplashScreen(),
     'selectTypeUser': (BuildContext context) => const SelectTypeScreen(),
     'loginGamer': (BuildContext context) => const LoginGamerPage(),
-    'loginCoach': (BuildContext context) => LoginCoachPage(),
-    'registerGamer': (BuildContext context) => RegisterGamerPage(),
-    'registerCoach': (BuildContext context) => RegisterCoachPage(),
+    'loginCoach': (BuildContext context) => const LoginCoachPage(),
+    'registerGamer': (BuildContext context) => const RegisterGamerPage(),
+    'registerCoach': (BuildContext context) => const RegisterCoachPage(),
   };
   static onGeneratedRoute(RouteSettings settings) {
     return MaterialPageRoute(builder: (context) => const Login());

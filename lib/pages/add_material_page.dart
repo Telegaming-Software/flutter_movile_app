@@ -159,7 +159,7 @@ class _AddMaterialPageState extends State<AddMaterialPage> {
                             labelStyle: TextStyle(color: Colors.black),
                           ),
                           onChanged: (value) {},
-                          style: TextStyle(fontSize: 17),
+                          style: const TextStyle(fontSize: 17),
                           maxLines: 30,
                         ),
                       )),
@@ -210,11 +210,11 @@ class _AddMaterialPageState extends State<AddMaterialPage> {
                   const SizedBox(height: 15),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(20, 31, 106, 1),
+                        primary: const Color.fromRGBO(20, 31, 106, 1),
                         minimumSize:
                             Size(MediaQuery.of(context).size.width / 1.5, 35)),
                     onPressed: () => Navigator.pop(context),
-                    child: Text('Regresar'),
+                    child: const Text('Regresar'),
                   ),
                 ],
               ),
@@ -225,7 +225,7 @@ class _AddMaterialPageState extends State<AddMaterialPage> {
     );
   }
 
-  Widget buildEditIcon(Color color) => Icon(
+  Widget buildEditIcon(Color color) => const Icon(
         Icons.edit,
         color: Colors.white,
         size: 20,

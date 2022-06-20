@@ -11,7 +11,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final String profileImage =
-      'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg';
+      'https://cdn3.vectorstock.com/i/1000x1000/52/97/image-a-person-icon-people-icon-on-blue-vector-27565297.jpg';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,17 +1,52 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tg_softwareapp/services/coach_service.dart';
 
 class RegisterCoachPage extends StatefulWidget {
-  RegisterCoachPage({Key? key}) : super(key: key);
+  const RegisterCoachPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterCoachPage> createState() => _RegisterCoachPageState();
 }
 
 class _RegisterCoachPageState extends State<RegisterCoachPage> {
+  final CoachService _coachService = CoachService();
   String textBirth = 'Fecha de nacimiento';
-
   DateTime _dataTime = DateTime.now();
+  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerField = TextEditingController();
+
+  Future<void> _registerCoach() async {
+    try {
+      await _coachService.registerCoach(
+          _controllerName.text,
+          _controllerEmail.text,
+          _controllerPassword.text,
+          _controllerField.text,
+          _dataTime.toIso8601String().substring(0, 10));
+      Navigator.pop(context);
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: const Text('Ha ocurrido un error'),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text('Cerrar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? _datePicker = await showDatePicker(
@@ -114,6 +149,7 @@ class _RegisterCoachPageState extends State<RegisterCoachPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _controllerName,
               decoration: const InputDecoration(
                 hintText: 'Nombre',
                 enabledBorder: UnderlineInputBorder(
@@ -151,6 +187,8 @@ class _RegisterCoachPageState extends State<RegisterCoachPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              controller: _controllerEmail,
               decoration: const InputDecoration(
                 hintText: 'Email ID',
                 enabledBorder: UnderlineInputBorder(
@@ -188,6 +226,9 @@ class _RegisterCoachPageState extends State<RegisterCoachPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              keyboardType: TextInputType.text,
+              controller: _controllerPassword,
+              obscureText: true,
               decoration: const InputDecoration(
                 hintText: 'Contraseña',
                 enabledBorder: UnderlineInputBorder(
@@ -225,6 +266,7 @@ class _RegisterCoachPageState extends State<RegisterCoachPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _controllerField,
               decoration: const InputDecoration(
                 hintText: 'Campo de interes',
                 enabledBorder: UnderlineInputBorder(
@@ -290,7 +332,7 @@ class _RegisterCoachPageState extends State<RegisterCoachPage> {
   Widget _signinButton() {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushReplacementNamed(context, 'selectTypeUser');
+        _registerCoach();
       },
       child: Text(
         'Sign up',

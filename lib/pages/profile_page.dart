@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(500),
                       child: Image.network(
-                        'https://i1.sndcdn.com/artworks-000216272705-8tjvzn-t500x500.jpg',
+                        'https://cdn3.vectorstock.com/i/1000x1000/52/97/image-a-person-icon-people-icon-on-blue-vector-27565297.jpg',
                         width: 150,
                         alignment: Alignment.center,
                       ),

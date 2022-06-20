@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tg_softwareapp/models/gamer.dart';
+import 'package:tg_softwareapp/services/gamer_service.dart';
 
 class RegisterGamerPage extends StatefulWidget {
-  RegisterGamerPage({Key? key}) : super(key: key);
+  const RegisterGamerPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterGamerPage> createState() => _RegisterGamerPageState();
@@ -10,8 +13,10 @@ class RegisterGamerPage extends StatefulWidget {
 
 class _RegisterGamerPageState extends State<RegisterGamerPage> {
   String textBirth = 'Fecha de nacimiento';
-
   DateTime _dataTime = DateTime.now();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? _datePicker = await showDatePicker(
@@ -26,6 +31,33 @@ class _RegisterGamerPageState extends State<RegisterGamerPage> {
         _dataTime = _datePicker;
         textBirth = _dataTime.toIso8601String().substring(0, 10);
       });
+    }
+  }
+
+  Future<void> _registerGamer() async {
+    try {
+      GamerService gamerService = GamerService();
+      await gamerService.registerGamer(_nameController.text,
+          _emailController.text, _passwordController.text, textBirth);
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: Text(e.toString()),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text('Ups! Hubo un error'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
     }
   }
 
@@ -112,6 +144,7 @@ class _RegisterGamerPageState extends State<RegisterGamerPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _nameController,
               decoration: const InputDecoration(
                 hintText: 'Nombre',
                 enabledBorder: UnderlineInputBorder(
@@ -149,6 +182,8 @@ class _RegisterGamerPageState extends State<RegisterGamerPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 hintText: 'Email ID',
                 enabledBorder: UnderlineInputBorder(
@@ -186,6 +221,8 @@ class _RegisterGamerPageState extends State<RegisterGamerPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _passwordController,
+              obscureText: true,
               decoration: const InputDecoration(
                 hintText: 'Contraseña',
                 enabledBorder: UnderlineInputBorder(
@@ -251,7 +288,7 @@ class _RegisterGamerPageState extends State<RegisterGamerPage> {
   Widget _signinButton() {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushReplacementNamed(context, 'selectTypeUser');
+        _registerGamer();
       },
       child: Text(
         'Sign up',

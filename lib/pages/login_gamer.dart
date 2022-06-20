@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
+import 'package:tg_softwareapp/models/gamer.dart';
+import 'package:tg_softwareapp/services/gamer_service.dart';
 
 class LoginGamerPage extends StatefulWidget {
   const LoginGamerPage({Key? key}) : super(key: key);
@@ -9,6 +14,37 @@ class LoginGamerPage extends StatefulWidget {
 }
 
 class _LoginGamerPageState extends State<LoginGamerPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<Gamer> _loginGamer() async {
+    try {
+      GamerService gamerService = GamerService();
+      Gamer alreadyUser = await gamerService.loginGamer(
+          _emailController.text, _passwordController.text);
+
+      return alreadyUser;
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: const Text('El email o la contraseña son incorrectos'),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text('Aceptar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+      throw Exception('Failed to load');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,90 +55,140 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.09,
-            ),
-            SizedBox(
-              child: Image.asset(
-                'assets/brand4.jpg',
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.3,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              width: double.infinity,
-              child: Text(
-                'Login',
-                style: GoogleFonts.nunito(
-                  textStyle: const TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w900,
-                    color: Color.fromRGBO(20, 31, 106, 1),
+        child: BlocBuilder<UsuarioBloc, UsuarioState>(
+          builder: (context, state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.09,
+                ),
+                SizedBox(
+                  child: Image.asset(
+                    'assets/brand4.jpg',
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-            ),
-            _inputEmail(),
-            const SizedBox(height: 20),
-            _inputPassword(),
-            const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: SizedBox(),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                  width: double.infinity,
+                  child: Text(
+                    'Login',
+                    style: GoogleFonts.nunito(
+                      textStyle: const TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w900,
+                        color: Color.fromRGBO(20, 31, 106, 1),
+                      ),
+                    ),
                   ),
-                  InkWell(
-                    child: Text(
-                      'Forgot Password?',
+                ),
+                _inputEmail(),
+                const SizedBox(height: 20),
+                _inputPassword(),
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: SizedBox(),
+                      ),
+                      InkWell(
+                        child: Text(
+                          'Forgot Password?',
+                          style: GoogleFonts.nunito(
+                            textStyle: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromRGBO(20, 31, 106, 1),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, 'restaurarPassword');
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      Gamer alreadyGamer = await _loginGamer();
+                      context
+                          .read<UsuarioBloc>()
+                          .add(LoginUserEvent(alreadyGamer, 'gamer'));
+                      Navigator.pushReplacementNamed(context, 'homePage');
+                    } catch (e) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text('Algo salio mal :('),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: const Text('Aceptar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    }
+                  },
+                  child: Text(
+                    'Login',
+                    style: GoogleFonts.nunito(
+                      textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize:
+                        Size(MediaQuery.of(context).size.height * 0.35, 45),
+                    primary: const Color.fromRGBO(20, 31, 106, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '¿Nuevo aqui? ',
                       style: GoogleFonts.nunito(
                         textStyle: const TextStyle(
                           fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(20, 31, 106, 1),
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, 'restaurarPassword');
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40),
-            _loginButton(),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '¿Nuevo aqui? ',
-                  style: GoogleFonts.nunito(
-                    textStyle: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                    Text('Registrate',
+                        style: GoogleFonts.nunito(
+                          textStyle: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromRGBO(20, 31, 106, 1),
+                          ),
+                        )),
+                  ],
                 ),
-                Text('Registrate',
-                    style: GoogleFonts.nunito(
-                      textStyle: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Color.fromRGBO(20, 31, 106, 1),
-                      ),
-                    )),
               ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -121,6 +207,8 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 hintText: 'Email ID',
                 enabledBorder: UnderlineInputBorder(
@@ -158,7 +246,8 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
-              keyboardType: TextInputType.visiblePassword,
+              controller: _passwordController,
+              obscureText: true,
               decoration: const InputDecoration(
                 hintText: 'Password',
                 enabledBorder: UnderlineInputBorder(
@@ -186,7 +275,7 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
   Widget _loginButton() {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushReplacementNamed(context, 'homePage');
+        _loginGamer();
       },
       child: Text(
         'Login',

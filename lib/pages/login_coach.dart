@@ -1,14 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tg_softwareapp/models/coach.dart';
+import 'package:tg_softwareapp/services/coach_service.dart';
 
 class LoginCoachPage extends StatefulWidget {
-  LoginCoachPage({Key? key}) : super(key: key);
+  const LoginCoachPage({Key? key}) : super(key: key);
 
   @override
   State<LoginCoachPage> createState() => _LoginCoachPageState();
 }
 
 class _LoginCoachPageState extends State<LoginCoachPage> {
+  final CoachService _coachService = CoachService();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _loginCoach() async {
+    try {
+      final Coach coach = await _coachService.loginCoach(
+        _emailController.text,
+        _passwordController.text,
+      );
+      Navigator.pushReplacementNamed(context, 'homePage');
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: Text(e.toString()),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text('Ups! Hubo un error'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +154,8 @@ class _LoginCoachPageState extends State<LoginCoachPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 hintText: 'Email ID',
                 enabledBorder: UnderlineInputBorder(
@@ -158,6 +193,8 @@ class _LoginCoachPageState extends State<LoginCoachPage> {
           const SizedBox(width: 20),
           Flexible(
             child: TextFormField(
+              controller: _passwordController,
+              obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               decoration: const InputDecoration(
                 hintText: 'Password',
@@ -186,7 +223,7 @@ class _LoginCoachPageState extends State<LoginCoachPage> {
   Widget _loginButton() {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushReplacementNamed(context, 'homePage');
+        _loginCoach();
       },
       child: Text(
         'Login',
