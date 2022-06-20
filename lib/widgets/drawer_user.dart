@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
 
 class DrawerUser extends StatefulWidget {
   const DrawerUser({Key? key}) : super(key: key);
@@ -11,56 +13,68 @@ class _DrawerUserState extends State<DrawerUser> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: const Color.fromRGBO(20, 31, 106, 1),
-        child: ListView(
-          children: [
-            _avatar(),
-            _drawerItem(
-                icon: Icons.home,
-                text: 'Inicio',
-                onpressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, 'homePage', ((route) => false));
-                }),
-            const SizedBox(height: 10),
-            _drawerItem(
-                icon: Icons.person,
-                text: 'Perfil',
-                onpressed: () {
-                  Navigator.pushNamed(context, 'profilePage');
-                }),
-            const SizedBox(height: 10),
-            _drawerItem(
-                icon: Icons.book,
-                text: 'Materiales',
-                onpressed: () {
-                  Navigator.pushNamed(context, 'materialesPage');
-                }),
-            const SizedBox(height: 10),
-            _drawerItem(
-                icon: Icons.social_distance_rounded,
-                text: 'Coaching',
-                onpressed: () {}),
-            _drawerItem(
-                icon: Icons.book,
-                text: 'Añade tu material',
-                onpressed: () {
-                  Navigator.pushNamed(context, 'addMaterialPage');
-                }),
-            _drawerItem(
-                icon: Icons.money_sharp,
-                text: 'Añadir balance',
-                onpressed: () {
-                  Navigator.pushNamed(context, 'addBalancePage');
-                }),
-            _drawerItem(
-                icon: Icons.exit_to_app_outlined,
-                text: 'Cerrar Sesión',
-                onpressed: () {}),
-          ],
-        ),
+      child: BlocBuilder<UsuarioBloc, UsuarioState>(
+        builder: (context, state) {
+          if (state is LogedUsuarioState) {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              color: const Color.fromRGBO(20, 31, 106, 1),
+              child: ListView(
+                children: [
+                  _avatar(),
+                  _drawerItem(
+                      icon: Icons.home,
+                      text: 'Inicio',
+                      onpressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, 'homePage', ((route) => false));
+                      }),
+                  const SizedBox(height: 10),
+                  _drawerItem(
+                      icon: Icons.person,
+                      text: 'Perfil',
+                      onpressed: () {
+                        Navigator.pushNamed(context, 'profilePage');
+                      }),
+                  const SizedBox(height: 10),
+                  _drawerItem(
+                      icon: Icons.book,
+                      text: 'Materiales',
+                      onpressed: () {
+                        Navigator.pushNamed(context, 'homePage');
+                      }),
+                  const SizedBox(height: 10),
+                  _drawerItem(
+                      icon: Icons.social_distance_rounded,
+                      text: 'Coaching',
+                      onpressed: () {}),
+                  const SizedBox(height: 10),
+                  state.typeUser != 'gamer'
+                      ? _drawerItem(
+                          icon: Icons.book,
+                          text: 'Añade tu material',
+                          onpressed: () {
+                            Navigator.pushNamed(context, 'addMaterialPage');
+                          })
+                      : _drawerItem(
+                          icon: Icons.money_sharp,
+                          text: 'Añadir balance',
+                          onpressed: () {
+                            Navigator.pushNamed(context, 'addBalancePage');
+                          }),
+                  const SizedBox(height: 10),
+                  _drawerItem(
+                      icon: Icons.exit_to_app_outlined,
+                      text: 'Cerrar Sesión',
+                      onpressed: () {}),
+                ],
+              ),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
@@ -68,10 +82,11 @@ class _DrawerUserState extends State<DrawerUser> {
 
 DrawerHeader _avatar() {
   return const DrawerHeader(
-      child: CircleAvatar(
-    backgroundImage: NetworkImage(
-        'https://cdn3.vectorstock.com/i/1000x1000/52/97/image-a-person-icon-people-icon-on-blue-vector-27565297.jpg'),
-  ));
+    child: CircleAvatar(
+      backgroundImage: NetworkImage(
+          'https://i.pinimg.com/564x/42/f2/50/42f2501e2c4b669b0f0c4b7bff4519fc.jpg'),
+    ),
+  );
 }
 
 ListTile _drawerItem({
