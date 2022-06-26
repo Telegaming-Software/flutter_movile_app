@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tg_softwareapp/models/gamer.dart';
 import 'package:tg_softwareapp/services/gamer_service.dart';
+import 'package:tg_softwareapp/widgets/load_dialog.dart';
 
 class RegisterGamerPage extends StatefulWidget {
   const RegisterGamerPage({Key? key}) : super(key: key);
@@ -287,8 +288,14 @@ class _RegisterGamerPageState extends State<RegisterGamerPage> {
 
   Widget _signinButton() {
     return ElevatedButton(
-      onPressed: () {
-        _registerGamer();
+      onPressed: () async {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const LoadDialog();
+            });
+        await _registerGamer();
+        Navigator.pop(context);
       },
       child: Text(
         'Sign up',

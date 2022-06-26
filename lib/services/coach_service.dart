@@ -48,4 +48,30 @@ class CoachService extends GeneralService {
       throw Exception('Failed to load coach');
     }
   }
+
+  Future<Coach> updateCoach(Coach updaterCoach) async {
+    final response =
+        await http.put(Uri.parse(url + 'coaches/${updaterCoach.coachId}'),
+            body: jsonEncode({
+              'name': updaterCoach.name,
+              'email': updaterCoach.email,
+              'password': updaterCoach.password,
+              'field': updaterCoach.field,
+              'birthDate': updaterCoach.birthDate,
+              'coachProfilePicture':
+                  'https://i.pinimg.com/564x/42/f2/50/42f2501e2c4b669b0f0c4b7bff4519fc.jpg',
+            }),
+            headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        });
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final Coach coach = Coach.fromJson(jsonResponse);
+      return coach;
+    } else {
+      throw Exception('Failed to load coach');
+    }
+  }
 }

@@ -78,9 +78,8 @@ class _CreditCardFormState extends State<CreditCardForm> {
           InputCreditCard(
             label: 'Cantidad de créditos a agregar',
             keyboadType: TextInputType.number,
-            onChanged: (text) {
-              widget.addNumber(text);
-            },
+            //TODO: agregar la funcion para añadir balance
+            onChanged: (text) {},
           ),
           SizedBox(height: responsive.dp(4)),
           ElevatedButton(

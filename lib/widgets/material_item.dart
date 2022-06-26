@@ -19,6 +19,7 @@ class MaterialItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       height: MediaQuery.of(context).size.height / 2.8,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -31,13 +32,10 @@ class MaterialItem extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 6,
             decoration: BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.cover,
+                fit: BoxFit.scaleDown,
                 image: NetworkImage(coverUri),
               ),
-              borderRadius: const BorderRadiusDirectional.only(
-                topEnd: Radius.circular(15),
-                topStart: Radius.circular(15),
-              ),
+              borderRadius: BorderRadiusDirectional.circular(30),
             ),
           ),
           const SizedBox(height: 10),

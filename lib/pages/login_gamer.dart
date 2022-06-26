@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
 import 'package:tg_softwareapp/models/gamer.dart';
 import 'package:tg_softwareapp/services/gamer_service.dart';
+import 'package:tg_softwareapp/widgets/load_dialog.dart';
 
 class LoginGamerPage extends StatefulWidget {
   const LoginGamerPage({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Error'),
-              content: const Text('El email o la contraseña son incorrectos'),
+              content: const Text('Ups! Parece que los datos no son correctos'),
               actions: <Widget>[
                 ElevatedButton(
                   child: const Text('Aceptar'),
@@ -120,12 +121,18 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
                 ElevatedButton(
                   onPressed: () async {
                     try {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const LoadDialog();
+                          });
                       Gamer alreadyGamer = await _loginGamer();
                       context
                           .read<UsuarioBloc>()
                           .add(LoginUserEvent(alreadyGamer, 'gamer'));
                       Navigator.pushReplacementNamed(context, 'homePage');
                     } catch (e) {
+                      Navigator.pop(context);
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -176,14 +183,21 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
                         ),
                       ),
                     ),
-                    Text('Registrate',
+                    InkWell(
+                      child: Text(
+                        'Registrate',
                         style: GoogleFonts.nunito(
                           textStyle: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: Color.fromRGBO(20, 31, 106, 1),
                           ),
-                        )),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, 'registerGamer');
+                      },
+                    ),
                   ],
                 ),
               ],

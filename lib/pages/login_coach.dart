@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
 import 'package:tg_softwareapp/models/coach.dart';
 import 'package:tg_softwareapp/services/coach_service.dart';
+import 'package:tg_softwareapp/widgets/load_dialog.dart';
 
 class LoginCoachPage extends StatefulWidget {
   const LoginCoachPage({Key? key}) : super(key: key);
@@ -15,23 +18,23 @@ class _LoginCoachPageState extends State<LoginCoachPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _loginCoach() async {
+  Future<Coach> _loginCoach() async {
     try {
       final Coach coach = await _coachService.loginCoach(
         _emailController.text,
         _passwordController.text,
       );
-      Navigator.pushReplacementNamed(context, 'homePage');
+      return coach;
     } catch (e) {
       showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: const Text('Error'),
-              content: Text(e.toString()),
+              content: const Text('Ups! Parece que los datos no son correctos'),
               actions: <Widget>[
                 ElevatedButton(
-                  child: const Text('Ups! Hubo un error'),
+                  child: const Text('Aceptar'),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -39,6 +42,7 @@ class _LoginCoachPageState extends State<LoginCoachPage> {
               ],
             );
           });
+      throw Exception('Error al iniciar sesión');
     }
   }
 
@@ -52,90 +56,155 @@ class _LoginCoachPageState extends State<LoginCoachPage> {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.09,
-            ),
-            SizedBox(
-              child: Image.asset(
-                'assets/brand5.jpg',
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.3,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              width: double.infinity,
-              child: Text(
-                'Login',
-                style: GoogleFonts.nunito(
-                  textStyle: const TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w900,
-                    color: Color.fromRGBO(20, 31, 106, 1),
+        child: BlocBuilder<UsuarioBloc, UsuarioState>(
+          builder: (context, state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.09,
+                ),
+                SizedBox(
+                  child: Image.asset(
+                    'assets/brand5.jpg',
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-            ),
-            _inputEmail(),
-            const SizedBox(height: 20),
-            _inputPassword(),
-            const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: SizedBox(),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                  width: double.infinity,
+                  child: Text(
+                    'Login',
+                    style: GoogleFonts.nunito(
+                      textStyle: const TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w900,
+                        color: Color.fromRGBO(20, 31, 106, 1),
+                      ),
+                    ),
                   ),
-                  InkWell(
-                    child: Text(
-                      'Forgot Password?',
+                ),
+                _inputEmail(),
+                const SizedBox(height: 20),
+                _inputPassword(),
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: SizedBox(),
+                      ),
+                      InkWell(
+                        child: Text(
+                          'Forgot Password?',
+                          style: GoogleFonts.nunito(
+                            textStyle: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromRGBO(20, 31, 106, 1),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, 'restaurarPassword');
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 40),
+                // Boton de login
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const LoadDialog();
+                          });
+                      Coach alreadyCoach = await _loginCoach();
+                      context
+                          .read<UsuarioBloc>()
+                          .add(LoginUserEvent(alreadyCoach, 'coach'));
+                      Navigator.pushReplacementNamed(context, 'homePage');
+                    } catch (e) {
+                      Navigator.pop(context);
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text('Algo salio mal :('),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: const Text('Aceptar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    }
+                  },
+                  child: Text(
+                    'Login',
+                    style: GoogleFonts.nunito(
+                      textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize:
+                        Size(MediaQuery.of(context).size.height * 0.35, 45),
+                    primary: const Color.fromRGBO(20, 31, 106, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                // Fin de boton de login
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '¿Nuevo aqui? ',
                       style: GoogleFonts.nunito(
                         textStyle: const TextStyle(
                           fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(20, 31, 106, 1),
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, 'restaurarPassword');
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40),
-            _loginButton(),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '¿Nuevo aqui? ',
-                  style: GoogleFonts.nunito(
-                    textStyle: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Text('Registrate',
-                    style: GoogleFonts.nunito(
-                      textStyle: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Color.fromRGBO(20, 31, 106, 1),
+                    InkWell(
+                      child: Text(
+                        'Registrate',
+                        style: GoogleFonts.nunito(
+                          textStyle: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromRGBO(20, 31, 106, 1),
+                          ),
+                        ),
                       ),
-                    )),
+                      onTap: () {
+                        Navigator.pushNamed(context, 'registerCoach');
+                      },
+                    ),
+                  ],
+                ),
               ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

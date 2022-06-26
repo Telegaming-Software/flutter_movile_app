@@ -64,14 +64,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               const SizedBox(height: 70),
-              _userData('Email:', state.usuario.name),
+              _userData('Email:', state.usuario.email),
               _userData('Birth date:', state.usuario.birthDate),
               state.typeUser == 'gamer'
                   ? _userData('Balance:', state.usuario.balance.toString())
                   : _userData('Field:', state.usuario.field),
               SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, 'profileEditPage');
+                },
                 child: AutoSizeText('Editar perfil',
                     style: GoogleFonts.nunito(
                       fontSize: 20,

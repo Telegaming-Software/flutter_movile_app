@@ -37,17 +37,15 @@ class _MaterialesPageState extends State<MaterialesPage> {
       backgroundColor: const Color.fromRGBO(210, 209, 227, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(20, 31, 106, 1),
+        title: const Text(
+          'Materiales',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.only(left: 25, top: 20),
-              child: const Text('Materiales',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            ),
-            const SizedBox(height: 20),
             ListView.builder(
                 physics: const ScrollPhysics(parent: null),
                 shrinkWrap: true,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tg_softwareapp/services/coach_service.dart';
+import 'package:tg_softwareapp/widgets/load_dialog.dart';
 
 class RegisterCoachPage extends StatefulWidget {
   const RegisterCoachPage({Key? key}) : super(key: key);
@@ -331,8 +332,14 @@ class _RegisterCoachPageState extends State<RegisterCoachPage> {
 
   Widget _signinButton() {
     return ElevatedButton(
-      onPressed: () {
-        _registerCoach();
+      onPressed: () async {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const LoadDialog();
+            });
+        await _registerCoach();
+        Navigator.pop(context);
       },
       child: Text(
         'Sign up',

@@ -35,22 +35,15 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color.fromRGBO(210, 209, 227, 1),
         appBar: AppBar(
           backgroundColor: const Color.fromRGBO(20, 31, 106, 1),
+          title: const Text(
+            'Escoge tu juego',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: const Text(
-                  'Escoge tu juego',
-                  style: TextStyle(
-                      color: Color.fromRGBO(20, 31, 106, 1),
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
               ListView.builder(
                 physics: const ScrollPhysics(parent: null),
                 shrinkWrap: true,
