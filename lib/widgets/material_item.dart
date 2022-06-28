@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
+import 'package:tg_softwareapp/models/gamer.dart';
 import 'package:tg_softwareapp/services/gamer_service.dart';
 import 'package:tg_softwareapp/utils/responsive.dart';
 import 'package:tg_softwareapp/widgets/compra_satisfactoria_material.dart';
@@ -110,11 +111,25 @@ class MaterialItem extends StatelessWidget {
                         try {
                           //TODO: implementar el método de compra del material
                           final buyService = GamerService();
+                          final GamerService service = GamerService();
                           showDialog(
                               context: context,
                               builder: (context) => const LoadDialog());
                           await buyService.purchaseMaterialTrining(
                               state.usuario.id, id);
+                          final Gamer responseGamer =
+                              await service.updateGamer(Gamer(
+                            id: state.usuario.id,
+                            name: state.usuario.name,
+                            email: state.usuario.email,
+                            password: state.usuario.password,
+                            birthDate: state.usuario.birthDate,
+                            age: 0,
+                            balance: state.usuario.balance - value,
+                          ));
+                          Navigator.pop(context);
+                          context.read<UsuarioBloc>().add(
+                              LoginUserEvent(responseGamer, state.typeUser));
                           Navigator.pop(context);
                           showDialog(
                               context: context,

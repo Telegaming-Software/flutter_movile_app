@@ -44,11 +44,13 @@ class _DrawerUserState extends State<DrawerUser> {
                       onpressed: () {
                         if (state.typeUser == 'gamer') {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OwnMaterialsPage(
-                                        idUsuario: state.usuario.id,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OwnMaterialsPage(
+                                idUsuario: state.usuario.id,
+                              ),
+                            ),
+                          );
                         } else {
                           //TODO: AGREGAR PAGINA DE COACH MATERIALES
                           //Navigator.pushNamed(context, 'addMaterialPage');

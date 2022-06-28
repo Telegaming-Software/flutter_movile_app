@@ -154,12 +154,14 @@ class InfoMaterialPage extends StatelessWidget {
                         Icon(Icons.download,
                             size: responsive.dp(3.6), color: Colors.blueAccent),
                         const SizedBox(width: 10),
-                        AutoSizeText(
-                          'Descargar material de entrenamiento',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: responsive.dp(2),
-                              color: Colors.blueAccent),
+                        Expanded(
+                          child: AutoSizeText(
+                            'Descargar material de entrenamiento',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: responsive.dp(1.5),
+                                color: Colors.blueAccent),
+                          ),
                         ),
                       ],
                     )

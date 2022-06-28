@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tg_softwareapp/models/material_training_model.dart';
 import 'package:tg_softwareapp/services/material_training_service.dart';
 import 'package:tg_softwareapp/utils/responsive.dart';
+import 'package:tg_softwareapp/widgets/drawer_user.dart';
 import 'package:tg_softwareapp/widgets/own_material.dart';
 
 class OwnMaterialsPage extends StatefulWidget {
@@ -34,6 +35,7 @@ class _OwnMaterialsPageState extends State<OwnMaterialsPage> {
   Widget build(BuildContext context) {
     final response = Responsive.of(context);
     return Scaffold(
+      drawer: const DrawerUser(),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(20, 31, 106, 1),
         title: const Text(

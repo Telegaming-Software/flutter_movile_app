@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
+import 'package:tg_softwareapp/pages/own_materials_page.dart';
 import 'package:tg_softwareapp/utils/responsive.dart';
 
 class SuccesBuyDialog extends StatelessWidget {
@@ -51,16 +54,30 @@ class SuccesBuyDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  child: Text('Ir a la sección de "Materiales"',
-                      maxLines: 2,
-                      style: TextStyle(fontSize: responsive.dp(2))),
-                  onPressed: () {
-                    Navigator.pop(context);
+                BlocBuilder<UsuarioBloc, UsuarioState>(
+                  builder: (context, state) {
+                    if (state is LogedUsuarioState) {
+                      return ElevatedButton(
+                        child: Text('Ir a la sección de "Materiales"',
+                            maxLines: 2,
+                            style: TextStyle(fontSize: responsive.dp(2))),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OwnMaterialsPage(
+                                idUsuario: state.usuario.id,
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.cyan,
+                        ),
+                      );
+                    }
+                    return const CircularProgressIndicator();
                   },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.cyan,
-                  ),
                 ),
               ],
             ),
