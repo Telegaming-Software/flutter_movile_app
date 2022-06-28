@@ -67,6 +67,7 @@ class SuccesBuyDialog extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => OwnMaterialsPage(
                                 idUsuario: state.usuario.id,
+                                isGamer: true,
                               ),
                             ),
                           );

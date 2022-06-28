@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
 import 'package:tg_softwareapp/models/material_training_model.dart';
 import 'package:tg_softwareapp/services/material_training_service.dart';
 import 'package:tg_softwareapp/widgets/drawer_user.dart';
@@ -46,19 +48,27 @@ class _MaterialesPageState extends State<MaterialesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListView.builder(
-                physics: const ScrollPhysics(parent: null),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return MaterialItem(
-                    coach: trainingMaterials[index].nameCoach!,
-                    coverUri: trainingMaterials[index].trainingCoverUri!,
-                    title: trainingMaterials[index].title!,
-                    id: trainingMaterials[index].trainingMaterialId!,
-                    value: trainingMaterials[index].value!,
-                  );
-                },
-                itemCount: trainingMaterials.length),
+            BlocBuilder<UsuarioBloc, UsuarioState>(
+              builder: (context, state) {
+                if (state is LogedUsuarioState) {
+                  return ListView.builder(
+                      physics: const ScrollPhysics(parent: null),
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return MaterialItem(
+                          coach: trainingMaterials[index].nameCoach!,
+                          coverUri: trainingMaterials[index].trainingCoverUri!,
+                          title: trainingMaterials[index].title!,
+                          id: trainingMaterials[index].trainingMaterialId!,
+                          value: trainingMaterials[index].value!,
+                          isGamer: state.typeUser == 'gamer' ? true : false,
+                        );
+                      },
+                      itemCount: trainingMaterials.length);
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
           ],
         ),
       ),

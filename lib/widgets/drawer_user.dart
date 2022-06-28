@@ -48,12 +48,20 @@ class _DrawerUserState extends State<DrawerUser> {
                             MaterialPageRoute(
                               builder: (context) => OwnMaterialsPage(
                                 idUsuario: state.usuario.id,
+                                isGamer: true,
                               ),
                             ),
                           );
                         } else {
-                          //TODO: AGREGAR PAGINA DE COACH MATERIALES
-                          //Navigator.pushNamed(context, 'addMaterialPage');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OwnMaterialsPage(
+                                idUsuario: state.usuario.coachId,
+                                isGamer: false,
+                              ),
+                            ),
+                          );
                         }
                       }),
                   const SizedBox(height: 10),

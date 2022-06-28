@@ -17,6 +17,7 @@ class MaterialItem extends StatelessWidget {
   String coach;
   int id;
   double value;
+  bool isGamer;
 
   MaterialItem(
       {Key? key,
@@ -24,7 +25,8 @@ class MaterialItem extends StatelessWidget {
       required this.title,
       required this.coach,
       required this.coverUri,
-      required this.value})
+      required this.value,
+      required this.isGamer})
       : super(key: key);
 
   @override
@@ -102,61 +104,76 @@ class MaterialItem extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
                     onPressed: () async {
-                      bool isBuyed = await showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) =>
-                              const ConfirmarCompraMaterialDialog());
-                      if (isBuyed && state.usuario.balance >= value) {
-                        try {
-                          //TODO: implementar el método de compra del material
-                          final buyService = GamerService();
-                          final GamerService service = GamerService();
-                          showDialog(
-                              context: context,
-                              builder: (context) => const LoadDialog());
-                          await buyService.purchaseMaterialTrining(
-                              state.usuario.id, id);
-                          final Gamer responseGamer =
-                              await service.updateGamer(Gamer(
-                            id: state.usuario.id,
-                            name: state.usuario.name,
-                            email: state.usuario.email,
-                            password: state.usuario.password,
-                            birthDate: state.usuario.birthDate,
-                            age: 0,
-                            balance: state.usuario.balance - value,
-                          ));
-                          Navigator.pop(context);
-                          context.read<UsuarioBloc>().add(
-                              LoginUserEvent(responseGamer, state.typeUser));
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (context) => const SuccesBuyDialog());
-                        } catch (e) {
+                      if (isGamer) {
+                        bool isBuyed = await showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) =>
+                                const ConfirmarCompraMaterialDialog());
+                        if (isBuyed && state.usuario.balance >= value) {
+                          try {
+                            final buyService = GamerService();
+                            final GamerService service = GamerService();
+                            showDialog(
+                                context: context,
+                                builder: (context) => const LoadDialog());
+                            await buyService.purchaseMaterialTrining(
+                                state.usuario.id, id);
+                            final Gamer responseGamer =
+                                await service.updateGamer(Gamer(
+                              id: state.usuario.id,
+                              name: state.usuario.name,
+                              email: state.usuario.email,
+                              password: state.usuario.password,
+                              birthDate: state.usuario.birthDate,
+                              age: 0,
+                              balance: state.usuario.balance - value,
+                            ));
+                            Navigator.pop(context);
+                            context.read<UsuarioBloc>().add(
+                                LoginUserEvent(responseGamer, state.typeUser));
+                            Navigator.pop(context);
+                            showDialog(
+                                context: context,
+                                builder: (context) => const SuccesBuyDialog());
+                          } catch (e) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Oh no!'),
+                                    content: const Text(
+                                        'No se pudo comprar el material'),
+                                    actions: [
+                                      ElevatedButton(
+                                        child: const Text('Ok'),
+                                        onPressed: () => Navigator.pop(context),
+                                      )
+                                    ],
+                                  );
+                                });
+                          }
+                        } else {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return AlertDialog(
+                                return const NotEnoughtCreditsDialog();
+                              });
+                        }
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
                                   title: const Text('Oh no!'),
                                   content: const Text(
-                                      'No se pudo comprar el material'),
+                                      'No tienes permiso para comprar materiales. Función exclusiva para los gamers'),
                                   actions: [
                                     ElevatedButton(
                                       child: const Text('Ok'),
                                       onPressed: () => Navigator.pop(context),
                                     )
                                   ],
-                                );
-                              });
-                        }
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const NotEnoughtCreditsDialog();
-                            });
+                                ));
                       }
                     },
                     child: const Text('Comprar ahora',

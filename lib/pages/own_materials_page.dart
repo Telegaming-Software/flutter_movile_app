@@ -7,7 +7,9 @@ import 'package:tg_softwareapp/widgets/own_material.dart';
 
 class OwnMaterialsPage extends StatefulWidget {
   final int idUsuario;
-  OwnMaterialsPage({Key? key, required this.idUsuario}) : super(key: key);
+  final bool isGamer;
+  OwnMaterialsPage({Key? key, required this.idUsuario, required this.isGamer})
+      : super(key: key);
 
   @override
   State<OwnMaterialsPage> createState() => _OwnMaterialsPageState();
@@ -18,11 +20,19 @@ class _OwnMaterialsPageState extends State<OwnMaterialsPage> {
 
   Future<void> _getMaterials() async {
     final MaterialTrainingService service = MaterialTrainingService();
-    final List<TrainingMaterial> materiales =
-        await service.getByGamer(widget.idUsuario);
-    setState(() {
-      _materiales = materiales;
-    });
+    if (widget.isGamer) {
+      final List<TrainingMaterial> materiales =
+          await service.getByGamer(widget.idUsuario);
+      setState(() {
+        _materiales = materiales;
+      });
+    } else {
+      final List<TrainingMaterial> materiales =
+          await service.getByCoach(widget.idUsuario);
+      setState(() {
+        _materiales = materiales;
+      });
+    }
   }
 
   @override
@@ -42,6 +52,16 @@ class _OwnMaterialsPageState extends State<OwnMaterialsPage> {
           'Mis materiales',
           style: TextStyle(color: Colors.white),
         ),
+        actions: widget.isGamer
+            ? null
+            : [
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'addMaterialPage');
+                  },
+                ),
+              ],
       ),
       body: Column(
         children: [
