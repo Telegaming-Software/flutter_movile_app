@@ -51,10 +51,12 @@ class _MaterialesPageState extends State<MaterialesPage> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return MaterialItem(
-                      coach: trainingMaterials[index].nameCoach!,
-                      coverUri: trainingMaterials[index].trainingCoverUri!,
-                      title: trainingMaterials[index].title!,
-                      id: trainingMaterials[index].trainingMaterialId!);
+                    coach: trainingMaterials[index].nameCoach!,
+                    coverUri: trainingMaterials[index].trainingCoverUri!,
+                    title: trainingMaterials[index].title!,
+                    id: trainingMaterials[index].trainingMaterialId!,
+                    value: trainingMaterials[index].value!,
+                  );
                 },
                 itemCount: trainingMaterials.length),
           ],

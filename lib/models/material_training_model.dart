@@ -7,13 +7,16 @@ class TrainingMaterial {
   String? trainingCoverUri;
   Game? game;
   String? nameCoach;
+  double? value;
 
   TrainingMaterial(
       {this.trainingMaterialId,
       this.title,
       this.trainingDescription,
       this.trainingCoverUri,
-      this.game});
+      this.game,
+      this.nameCoach,
+      this.value});
 
   TrainingMaterial.fromJson(Map<String, dynamic> json) {
     trainingMaterialId = json['trainingMaterialId'];
@@ -22,6 +25,7 @@ class TrainingMaterial {
     trainingCoverUri = json['trainingCoverUri'];
     game = json['game'] != null ? Game.fromJson(json['game']) : null;
     nameCoach = json['coach'] != null ? json['coach']['name'] : 'Unnamed Coach';
+    value = json['value'];
   }
 
   Map<String, dynamic> toJson() {

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
 import 'package:tg_softwareapp/services/gamer_service.dart';
+import 'package:tg_softwareapp/utils/responsive.dart';
 import 'package:tg_softwareapp/widgets/compra_satisfactoria_material.dart';
+import 'package:tg_softwareapp/widgets/insuficientes_creditos.dart';
 import 'package:tg_softwareapp/widgets/load_dialog.dart';
 
 import 'confirmar_compra_material.dart';
@@ -13,17 +15,20 @@ class MaterialItem extends StatelessWidget {
   String title;
   String coach;
   int id;
+  double value;
 
   MaterialItem(
       {Key? key,
       required this.id,
       required this.title,
       required this.coach,
-      required this.coverUri})
+      required this.coverUri,
+      required this.value})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Responsive responsive = Responsive.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -72,9 +77,17 @@ class MaterialItem extends StatelessWidget {
                 AutoSizeText(
                   coach,
                   maxLines: 2,
-                  style: const TextStyle(
-                      fontSize: 13,
+                  style: TextStyle(
+                      fontSize: responsive.dp(2),
                       color: Colors.blue,
+                      fontWeight: FontWeight.w500),
+                ),
+                const Expanded(child: SizedBox()),
+                AutoSizeText(
+                  '\$${value.toStringAsFixed(2)}',
+                  style: TextStyle(
+                      fontSize: responsive.dp(2.1),
+                      color: Colors.black,
                       fontWeight: FontWeight.w500),
                 ),
               ],
@@ -93,7 +106,7 @@ class MaterialItem extends StatelessWidget {
                           context: context,
                           builder: (context) =>
                               const ConfirmarCompraMaterialDialog());
-                      if (isBuyed) {
+                      if (isBuyed && state.usuario.balance >= value) {
                         try {
                           //TODO: implementar el método de compra del material
                           final buyService = GamerService();
@@ -123,6 +136,12 @@ class MaterialItem extends StatelessWidget {
                                 );
                               });
                         }
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const NotEnoughtCreditsDialog();
+                            });
                       }
                     },
                     child: const Text('Comprar ahora',

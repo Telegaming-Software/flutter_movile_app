@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
+import 'package:tg_softwareapp/models/gamer.dart';
+import 'package:tg_softwareapp/services/gamer_service.dart';
 import 'package:tg_softwareapp/utils/responsive.dart';
 import 'package:tg_softwareapp/widgets/input_credit_card_form.dart';
+import 'package:tg_softwareapp/widgets/load_dialog.dart';
+
+import 'agregar_creditos_satisfactorio.dart';
 
 class CreditCardForm extends StatefulWidget {
   String number;
@@ -22,11 +29,7 @@ class CreditCardForm extends StatefulWidget {
 }
 
 class _CreditCardFormState extends State<CreditCardForm> {
-  String numeroTarjeta = '';
-  String fechaExpiracion = '';
-  String cvv = '';
-  String nombreTarjeta = '';
-  String cantidadCredito = '';
+  double creditos = 0;
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
@@ -79,22 +82,74 @@ class _CreditCardFormState extends State<CreditCardForm> {
             label: 'Cantidad de créditos a agregar',
             keyboadType: TextInputType.number,
             //TODO: agregar la funcion para añadir balance
-            onChanged: (text) {},
+            onChanged: (text) {
+              if (text.isNotEmpty) {
+                creditos = double.parse(text);
+              }
+            },
           ),
           SizedBox(height: responsive.dp(4)),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text(
-              'Agregar créditos',
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.cyan,
-              minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
+          BlocBuilder<UsuarioBloc, UsuarioState>(
+            builder: (context, state) {
+              if (state is LogedUsuarioState) {
+                return ElevatedButton(
+                  onPressed: () async {
+                    if (creditos > 0) {
+                      try {
+                        final GamerService service = GamerService();
+                        showDialog(
+                            context: context,
+                            builder: (context) => const LoadDialog());
+                        final Gamer responseGamer =
+                            await service.updateGamer(Gamer(
+                          id: state.usuario.id,
+                          name: state.usuario.name,
+                          email: state.usuario.email,
+                          password: state.usuario.password,
+                          birthDate: state.usuario.birthDate,
+                          age: 0,
+                          balance: state.usuario.balance + creditos,
+                        ));
+                        Navigator.pop(context);
+                        context
+                            .read<UsuarioBloc>()
+                            .add(LoginUserEvent(responseGamer, state.typeUser));
+                        showDialog(
+                            context: context,
+                            builder: (context) =>
+                                const AddCreditsSuccesDialog());
+                      } catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('Ups! algo salió mal'),
+                                  content: const Text(
+                                      'No se pudo agregar el crédito'),
+                                  actions: [
+                                    ElevatedButton(
+                                      child: const Text('Ok'),
+                                      onPressed: () => Navigator.pop(context),
+                                    )
+                                  ],
+                                ));
+                      }
+                    }
+                  },
+                  child: const Text(
+                    'Agregar créditos',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.cyan,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                );
+              }
+              return const CircularProgressIndicator();
+            },
           ),
           SizedBox(height: responsive.dp(3)),
         ],
