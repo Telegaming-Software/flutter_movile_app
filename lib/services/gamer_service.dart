@@ -73,4 +73,20 @@ class GamerService extends GeneralService {
       throw Exception('Failed to load gamer');
     }
   }
+
+  Future<Gamer> purchaseMaterialTrining(int playerId, int trainingId) async {
+    final response = await http.put(
+        Uri.parse(url + 'players/$playerId/training/$trainingId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        });
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final Gamer gamer = Gamer.fromJson(jsonResponse);
+      return gamer;
+    } else {
+      throw Exception('Failed to load gamer');
+    }
+  }
 }

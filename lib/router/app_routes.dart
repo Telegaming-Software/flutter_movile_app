@@ -5,6 +5,7 @@ import 'package:tg_softwareapp/pages/login.dart';
 import 'package:tg_softwareapp/pages/login_coach.dart';
 import 'package:tg_softwareapp/pages/login_gamer.dart';
 import 'package:tg_softwareapp/pages/material_info_page.dart';
+import 'package:tg_softwareapp/pages/own_materials_page.dart';
 import 'package:tg_softwareapp/pages/register_coach.dart';
 import 'package:tg_softwareapp/pages/register_gamer.dart';
 import 'package:tg_softwareapp/pages/restaurar_password_page.dart';
@@ -38,6 +39,7 @@ class AppRoutes {
     'loginCoach': (BuildContext context) => const LoginCoachPage(),
     'registerGamer': (BuildContext context) => const RegisterGamerPage(),
     'registerCoach': (BuildContext context) => const RegisterCoachPage(),
+    //'gamerMaterials': (BuildContext context) => OwnMaterialsPage(),
   };
   static onGeneratedRoute(RouteSettings settings) {
     return MaterialPageRoute(builder: (context) => const Login());

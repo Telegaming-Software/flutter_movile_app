@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tg_softwareapp/bloc/usuario/usuario_bloc.dart';
+import 'package:tg_softwareapp/pages/own_materials_page.dart';
 
 class DrawerUser extends StatefulWidget {
   const DrawerUser({Key? key}) : super(key: key);
@@ -41,7 +42,17 @@ class _DrawerUserState extends State<DrawerUser> {
                       icon: Icons.book,
                       text: 'Materiales',
                       onpressed: () {
-                        Navigator.pushNamed(context, 'homePage');
+                        if (state.typeUser == 'gamer') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OwnMaterialsPage(
+                                        idUsuario: state.usuario.id,
+                                      )));
+                        } else {
+                          //TODO: AGREGAR PAGINA DE COACH MATERIALES
+                          //Navigator.pushNamed(context, 'addMaterialPage');
+                        }
                       }),
                   const SizedBox(height: 10),
                   _drawerItem(

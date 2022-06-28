@@ -145,6 +145,7 @@ class _LoginCoachPageState extends State<LoginCoachPage> {
                                   child: const Text('Aceptar'),
                                   onPressed: () {
                                     Navigator.of(context).pop();
+                                    Navigator.pop(context);
                                   },
                                 ),
                               ],

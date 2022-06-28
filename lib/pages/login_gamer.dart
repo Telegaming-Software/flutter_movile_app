@@ -138,12 +138,14 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
                           builder: (context) {
                             return AlertDialog(
                               title: const Text('Error'),
-                              content: const Text('Algo salio mal :('),
+                              content: const Text(
+                                  'Ups! Parece que los datos no son correctos'),
                               actions: <Widget>[
                                 ElevatedButton(
                                   child: const Text('Aceptar'),
                                   onPressed: () {
                                     Navigator.of(context).pop();
+                                    Navigator.pop(context);
                                   },
                                 ),
                               ],

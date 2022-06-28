@@ -16,57 +16,61 @@ class _SelectTypeScreenState extends State<SelectTypeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '¿Qué tipo de usuario eres?',
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '¿Qué tipo de usuario eres?',
+                        maxLines: 2,
+                        style: GoogleFonts.lato(
+                          textStyle: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(20, 31, 106, 1),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: typeUser == 'Gamer' ? _userStack() : _coachStack(),
+                    ),
+                    Text(
+                      typeUser,
                       maxLines: 2,
                       style: GoogleFonts.lato(
                         textStyle: const TextStyle(
                           fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                           color: Color.fromRGBO(20, 31, 106, 1),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: typeUser == 'Gamer' ? _userStack() : _coachStack(),
-                  ),
-                  Text(
-                    typeUser,
-                    maxLines: 2,
-                    style: GoogleFonts.lato(
-                      textStyle: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                        color: Color.fromRGBO(20, 31, 106, 1),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  _loginButton(),
-                  const SizedBox(height: 10),
-                  _registerButton(),
-                ],
-              ),
-            )
-          ],
+              Expanded(
+                child: Column(
+                  children: [
+                    _loginButton(),
+                    const SizedBox(height: 10),
+                    _registerButton(),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

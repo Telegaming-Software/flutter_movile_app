@@ -23,4 +23,22 @@ class MaterialTrainingService extends GeneralService {
       throw Exception('Failed to load games');
     }
   }
+
+  Future<List<TrainingMaterial>> getByGamer(int gamerId) async {
+    final response = await http.get(
+        Uri.parse(url + 'trainingMaterials/player/' + gamerId.toString()),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        });
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final List<TrainingMaterial> materials = jsonResponse['content']
+          .map<TrainingMaterial>((json) => TrainingMaterial.fromJson(json))
+          .toList();
+      return materials;
+    } else {
+      throw Exception('Failed to load games');
+    }
+  }
 }
