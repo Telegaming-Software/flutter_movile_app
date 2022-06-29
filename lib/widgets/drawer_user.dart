@@ -75,7 +75,15 @@ class _DrawerUserState extends State<DrawerUser> {
                           icon: Icons.book,
                           text: 'Añade tu material',
                           onpressed: () {
-                            Navigator.pushNamed(context, 'addMaterialPage');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OwnMaterialsPage(
+                                  idUsuario: state.usuario.coachId,
+                                  isGamer: false,
+                                ),
+                              ),
+                            );
                           })
                       : _drawerItem(
                           icon: Icons.money_sharp,
@@ -87,7 +95,10 @@ class _DrawerUserState extends State<DrawerUser> {
                   _drawerItem(
                       icon: Icons.exit_to_app_outlined,
                       text: 'Cerrar Sesión',
-                      onpressed: () {}),
+                      onpressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, 'splashscreen', (route) => false);
+                      }),
                 ],
               ),
             );

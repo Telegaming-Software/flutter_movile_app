@@ -186,11 +186,11 @@ class _MaterialInfoPageState extends State<MaterialInfoPage> {
                       const SizedBox(height: 15),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(20, 31, 106, 1),
+                            primary: const Color.fromRGBO(20, 31, 106, 1),
                             minimumSize: Size(
                                 MediaQuery.of(context).size.width / 1.5, 35)),
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Regresar'),
+                        child: const Text('Regresar'),
                       ),
                     ],
                   ),
