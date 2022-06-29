@@ -5,7 +5,6 @@ import 'package:tg_softwareapp/pages/login.dart';
 import 'package:tg_softwareapp/pages/login_coach.dart';
 import 'package:tg_softwareapp/pages/login_gamer.dart';
 import 'package:tg_softwareapp/pages/material_info_page.dart';
-import 'package:tg_softwareapp/pages/own_materials_page.dart';
 import 'package:tg_softwareapp/pages/register_coach.dart';
 import 'package:tg_softwareapp/pages/register_gamer.dart';
 import 'package:tg_softwareapp/pages/restaurar_password_page.dart';

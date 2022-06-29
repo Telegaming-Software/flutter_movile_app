@@ -81,7 +81,6 @@ class _CreditCardFormState extends State<CreditCardForm> {
           InputCreditCard(
             label: 'Cantidad de créditos a agregar',
             keyboadType: TextInputType.number,
-            //TODO: agregar la funcion para añadir balance
             onChanged: (text) {
               if (text.isNotEmpty) {
                 creditos = double.parse(text);

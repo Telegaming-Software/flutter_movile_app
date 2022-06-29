@@ -82,7 +82,6 @@ class MaterialTrainingService extends GeneralService {
               'trainingCoverUri': trainingCoverUri,
               'value': value,
             }));
-    print(response.body);
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
       final TrainingMaterial material = TrainingMaterial.fromJson(jsonResponse);
