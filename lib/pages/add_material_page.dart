@@ -139,7 +139,6 @@ class _AddMaterialPageState extends State<AddMaterialPage> {
                             builder: (context) => const SuccesBuyDialog());
                       } catch (e) {
                         Navigator.pop(context);
-                        print(e.toString());
                         showDialog(
                             context: context,
                             builder: (context) {

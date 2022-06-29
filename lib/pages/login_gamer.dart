@@ -287,29 +287,4 @@ class _LoginGamerPageState extends State<LoginGamerPage> {
       ),
     );
   }
-
-  Widget _loginButton() {
-    return ElevatedButton(
-      onPressed: () {
-        _loginGamer();
-      },
-      child: Text(
-        'Login',
-        style: GoogleFonts.nunito(
-          textStyle: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size(MediaQuery.of(context).size.height * 0.35, 45),
-        primary: const Color.fromRGBO(20, 31, 106, 1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
 }

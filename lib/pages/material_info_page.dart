@@ -51,7 +51,7 @@ class _MaterialInfoPageState extends State<MaterialInfoPage> {
                             height: 120,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                 image: NetworkImage(
                                     'https://c.tenor.com/S_Bm_Ect9uMAAAAC/chika-delicious.gif'),
                                 fit: BoxFit.cover,
