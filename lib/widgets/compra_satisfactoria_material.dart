@@ -41,7 +41,7 @@ class SuccesBuyDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  child: Text('Volver a la tienda',
+                  child: Text('Volver',
                       style: TextStyle(
                           color: Colors.cyan, fontSize: responsive.dp(2))),
                   onPressed: () {
@@ -62,15 +62,27 @@ class SuccesBuyDialog extends StatelessWidget {
                             maxLines: 2,
                             style: TextStyle(fontSize: responsive.dp(2))),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OwnMaterialsPage(
-                                idUsuario: state.usuario.id,
-                                isGamer: true,
+                          if (state.typeUser == 'gamer') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OwnMaterialsPage(
+                                  idUsuario: state.usuario.id,
+                                  isGamer: true,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } else if (state.typeUser == 'coach') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OwnMaterialsPage(
+                                  idUsuario: state.usuario.coachId,
+                                  isGamer: false,
+                                ),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.cyan,
